@@ -10,6 +10,7 @@ contract PanagramTest is Test{
 
     HonkVerifier public verifier;
     Panagram public panagram;
+    address user = makeAddr("user1");
 
     //Max size of the field 
     uint256 constant FIELD_MODULUS = 2 ** 256 - 1;
@@ -30,7 +31,11 @@ contract PanagramTest is Test{
     }
 
     //test someone recieves NFT 0 when guess correctly first
+    function testCorrectGuessPasses() public{
+        vm.prank(user);
+        panagram.makeGuess(proof); //provide valid proof here
 
+    }
 
     //test someone gets NFT 1 is they guess correctly second
 
