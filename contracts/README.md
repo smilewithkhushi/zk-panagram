@@ -4,7 +4,7 @@ A zero-knowledge based panagram guessing game smart contract built with ERC-1155
 
 ## Overview
 
-Panagram is a competitive guessing game where players submit answers in rounds. Each round is managed by the contract owner, and winners are rewarded with NFTs based on their placement.
+Panagram is a competitive guessing game where players submit answers in rounds. Each round is managed by the contract owner, and winners are rewarded with NFTs based on their placement. The contract uses zero-knowledge proofs for verifying correct answers while preserving privacy.
 
 ## Game Mechanics
 
@@ -22,16 +22,20 @@ Panagram is a competitive guessing game where players submit answers in rounds. 
 ### Guess Verification
 
 - Player guesses are verified through an external **Verifier contract**
-- Verification uses zero-knowledge proofs to ensure correctness
+- Verification uses zero-knowledge proofs to ensure correctness without revealing sensitive information
 
 ## Rewards (ERC-1155 NFT)
 
 Winners are minted NFTs based on their placement:
 
-- **Token ID 0**: First correct guess (Winner) - minted to the first player to answer correctly
-- **Token ID 1**: Correct guess (Runner-up) - minted to subsequent players who answer correctly
+- **Token ID 0**: First correct guess (Winner) - minted to the first player to answer correctly in a round
+- **Token ID 1**: Correct guess (Runner-up) - minted to subsequent players who answer correctly in the same round
 
 ## Setup
+
+### Prerequisites
+
+- [Foundry](https://book.getfoundry.sh/) installed on your system
 
 ### Installation
 
@@ -45,5 +49,24 @@ forge install OpenZeppelin/openzeppelin-contracts --no-commit
 **Dependencies:**
 - OpenZeppelin Contracts v5.3.0
 
-Image access URL - https://silver-capable-mule-577.mypinata.cloud/ipfs/bafybeibfoq4c7u7v2beaw53cbbt77rgfrr7tcv3subriq6ufgxxfo5d6e4
+### Building
+
+Compile the smart contracts:
+
+```bash
+forge build
+```
+
+### Testing
+
+Run the test suite:
+
+```bash
+forge test
+```
+
+## Contract Files
+
+- `Panagram.sol` - Main game contract with ERC-1155 functionality
+- `Verifier.sol` - Zero-knowledge proof verifier contract
 
