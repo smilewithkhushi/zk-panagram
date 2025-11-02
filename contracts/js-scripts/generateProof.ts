@@ -4,6 +4,8 @@ import {ethers} from "ethers";
 import {UltraHonkBackend} from "@aztec/bb.js";
 
 //get the circuit file
+import.meta.url
+"../../circuits/target/zk_panagram.json";
 
 
 //initialize Noir with the circuit

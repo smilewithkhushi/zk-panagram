@@ -30,6 +30,20 @@ contract PanagramTest is Test{
 
     }
 
+    //this function to run the ts script to generate proof with ffi dependency
+    function _getProof(bytes32 guess, bytes32 correctAnswer) internal returns (bytes memory _proof){
+        uint256 constant NUM_ARGS = 5;
+        
+        string[] memory inputs = new string[](NUM_ARGS);
+        inputs[0] = "npx";
+        inputs[1] = "tsx";
+        inputs[2] = "js-scripts/generate-proof.ts";
+        inputs[3] = vm.toString(uint256(guess));
+        inputs[4] = vm.toString(uint256(correctAnswer));
+
+        bytes memory result = vm.ffi(inputs);
+    }
+
     //test someone recieves NFT 0 when guess correctly first
     function testCorrectGuessPasses() public{
         vm.prank(user);
