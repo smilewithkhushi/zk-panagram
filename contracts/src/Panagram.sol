@@ -75,42 +75,19 @@ contract Panagram is ERC1155, Ownable {
     }
 
     //function to allow user to submit a guess
-    function makeGuess(bytes memory proof) external returns (bool) {
-        //check if first round has started
-        if (s_currentRound == 0) {
-            revert Panagram__FirstPanagramNotSet();
-        }
-
-        //check if users has already guessed the answer
-        if (s_LastCorrectGuessRound[msg.sender] == s_currentRound) {
-            revert Panagram__AlreadyGuessedCorrectly(
-                s_currentRound,
-                msg.sender
-            );
-        }
-
-        //chek the proof and verify it with verify contract
+    function makeGuess(bytes memory proof) external {
+        //if correct, mint NFT 0 token to msg.sender
+        //if not correct, check runner up - mint NFT 1
+        
         bytes32[] memory publicInputs = new bytes32[](1);
         publicInputs[0] = s_answer;
-        bool proofResult = verifier.verify(proof, publicInputs);
-
-        //revert if incorrect
-        if (!proofResult) {
-            revert Panagram__InvalidProof();
-        }
-
-        s_LastCorrectGuessRound[msg.sender] = s_currentRound;
-        //if correct check they are first, if they are then mint the nft with id = 0
-        if (s_currentRoundWinner == address(0)) {
-            s_currentRoundWinner = msg.sender;
+        
+        bool verified = verifier.verify(proof, publicInputs);
+        
+        if (verified) {
+            //award the token to first person
             _mint(msg.sender, 0, 1, "");
-            emit Panagram__WinnerCrowned(msg.sender, s_currentRound);
-        } else {
-            //if they are correct but not first, then mint NFT id = 1
-            _mint(msg.sender, 1, 1, "");
-            emit Panagram__RunnerUpCrowned(msg.sender, s_currentRound);
         }
-        return proofResult;
     }
 
     //function to set a new verifier only accessed by owner
